@@ -86,17 +86,7 @@ launch_vnc_server() {
 
 launch_google_chrome() {
     /usr/bin/google-chrome \
-    # --headless \
-    --no-sandbox \
-    # --disable-gpu \
-    # --remote-debugging-address=0.0.0.0 \
-    # --remote-debugging-port=9222 \
-    # --use-mock-keychain \
-    # --password-store=basic \
     --disable-dev-shm-usage \
-    # --test-type=webdriver \
-    # --enable-automation \
-    # --disable-hang-monitor \
     --window-size=960,540 \
     --disable-background-networking \
     --disable-default-apps \
@@ -105,7 +95,6 @@ launch_google_chrome() {
     --disable-web-resources \
     --disable-notifications \
     --disable-translate \
-    # --hide-scrollbars \
     --metrics-recording-only \
     --safebrowsing-disable-auto-update \
     --no-default-browser-check --no-first-run --disable-fre \
