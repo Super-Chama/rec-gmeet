@@ -131,12 +131,6 @@ launch_pulse_audio() {
     pactl set-source-volume 3 60%
 }
 
-launch_ffmpeg() {
-    ffmpeg -nostats -loglevel quiet -f pulse -ac 2 -i 1 -f x11grab -r 30 \
-    -s 960x540 -i ${DISPLAY} -acodec pcm_s16le -vcodec libx264rgb -preset ultrafast \
-    -crf 0 -threads 0 -async 1 -vsync 1 /home/chrome/test.mkv &
-}
-
 launch_puppeteer() {
     node /home/chrome/index.js &
     wait $!

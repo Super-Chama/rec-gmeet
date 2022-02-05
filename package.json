@@ -1,5 +1,5 @@
 {
-  "name": "rec-meet",
+  "name": "rec-gmeet",
   "version": "1.0.0",
   "description": "puppeteer script to record google meet",
   "main": "index.js",
