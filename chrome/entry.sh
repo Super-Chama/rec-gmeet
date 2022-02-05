@@ -7,8 +7,12 @@ main() {
     launch_xvfb
     log_i "Starting window manager..."
     launch_window_manager
+    log_i "Starting pulse audio..."
+    launch_pulse_audio
     log_i "Starting VNC server..."
     launch_vnc_server
+    log_i "Starting ffmpeg..."
+    launch_ffmpeg
     log_i "Starting google chrome..."
     launch_google_chrome
 }
@@ -87,19 +91,47 @@ launch_vnc_server() {
 launch_google_chrome() {
     /usr/bin/google-chrome \
     --disable-dev-shm-usage \
-    --window-size=960,540 \
+    --start-maximized \
     --disable-background-networking \
     --disable-default-apps \
     --disable-extensions \
     --disable-sync \
     --disable-web-resources \
-    --disable-notifications \
-    --disable-translate \
-    --metrics-recording-only \
-    --safebrowsing-disable-auto-update \
+    --remote-debugging-port=9222 \
+    --use-fake-ui-for-media-stream \
+    --remote-debugging-address=0.0.0.0 \
     --no-default-browser-check --no-first-run --disable-fre \
+    --flag-switches-begin --disable-features=ChromeWhatsNewUI --flag-switches-end \
     --user-data-dir=/home/chrome &
     wait $!
+}
+
+launch_pulse_audio() {
+    # Cleanup to ensure pulseaudio is stateless
+    rm -rf /var/run/pulse /var/lib/pulse /home/chrome/.config/pulse
+
+    # Start audio
+    pulseaudio -D --exit-idle-time=-1 --log-level=error
+
+    # Create speaker Dummy-Output
+    pactl load-module module-null-sink sink_name=speaker sink_properties=device.description="speaker" > /dev/null
+    pactl set-source-volume 1 100%
+
+    # Create microphone Dummy-Output
+    pactl load-module module-null-sink sink_name=microphone sink_properties=device.description="microphone" > /dev/null
+    pactl set-source-volume 2 100%
+
+    # Map microphone-Output to microphone-Input
+    pactl load-module module-loopback latency_msec=1 source=2 sink=microphone > /dev/null
+    pactl load-module module-remap-source master=microphone.monitor source_name=microphone source_properties=device.description="microphone" > /dev/null
+    # Set microphone Volume
+    pactl set-source-volume 3 60%
+}
+
+launch_ffmpeg() {
+    ffmpeg -nostats -loglevel quiet -f pulse -ac 2 -i 1 -f x11grab -r 30 \
+    -s 960x540 -i ${DISPLAY} -acodec pcm_s16le -vcodec libx264rgb -preset ultrafast \
+    -crf 0 -threads 0 -async 1 -vsync 1 /home/chrome/test.mkv &
 }
 
 log_i() {
