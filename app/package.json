@@ -1,0 +1,15 @@
+{
+  "name": "rec-meet",
+  "version": "1.0.0",
+  "description": "puppeteer script to record google meet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Chamara Abesinghe",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer-core": "^13.1.3"
+  }
+}

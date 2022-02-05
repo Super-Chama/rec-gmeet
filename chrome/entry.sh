@@ -11,8 +11,6 @@ main() {
     launch_pulse_audio
     log_i "Starting VNC server..."
     launch_vnc_server
-    log_i "Starting ffmpeg..."
-    launch_ffmpeg
     log_i "Starting google chrome..."
     launch_google_chrome
 }
@@ -100,6 +98,8 @@ launch_google_chrome() {
     --remote-debugging-port=9222 \
     --use-fake-ui-for-media-stream \
     --remote-debugging-address=0.0.0.0 \
+    --enable-automation \
+    --disable-blink-features=AutomationControlled \
     --no-default-browser-check --no-first-run --disable-fre \
     --flag-switches-begin --disable-features=ChromeWhatsNewUI --flag-switches-end \
     --user-data-dir=/home/chrome &

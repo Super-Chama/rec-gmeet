@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  chrome:
+    image: super-chama/chrome:0.4.1
+    user: chrome
+    privileged: true
+    platform: linux/x86_64
+    build:
+      context: chrome/
+    ports:
+     - 9222:9222
+     - 5900:5900
+
+  # puppeteer:
+  #   build:
+  #     context: app/
+  #   depends_on:
+  #     - "chrome"
