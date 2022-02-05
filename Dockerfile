@@ -46,6 +46,11 @@ RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | apt-key add -
     apt-get update && apt-get install -yq google-chrome-stable
 
 #========================
+# Node 16x
+#========================
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && apt-get install -y nodejs
+
+#========================
 # Setup default user
 #========================
 RUN groupadd -r chrome && useradd -r -g chrome -G audio,video,pulse-access chrome \
@@ -53,6 +58,12 @@ RUN groupadd -r chrome && useradd -r -g chrome -G audio,video,pulse-access chrom
 
 WORKDIR /home/chrome
 USER chrome
+
+#========================
+# Setup node app
+#========================
+COPY package*.json index.js ./
+RUN npm ci --only=production && npm cache clean --force
 
 COPY entry.sh /
 

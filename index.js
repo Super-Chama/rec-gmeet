@@ -1,17 +1,15 @@
 const puppeteer = require("puppeteer-core");
 
-const chromeHost = "127.0.0.1";
-const chromePort = "9222";
 const meetURL = "https://meet.google.com";
-const meetCode = "kay-shnj-pvd";
-const meetUsername = "Jordan";
-const lobbyTimeout = 10000;
+const meetCode = process.env.MEET_CODE;
+const meetUsername = process.env.MEET_USER || "Aaron";
+const meetTimeout = process.env.MEET_TIMEOUT || 10000;
 
 const launchPuppeteer = async () => {
   // connect with chrome instance
   // defaultViewport will auto adjust
   const browser = await puppeteer.connect({
-    browserURL: `http://${chromeHost}:${chromePort}`,
+    browserURL: `http://localhost:9222`,
     defaultViewport: null,
   });
 
@@ -40,7 +38,7 @@ const launchPuppeteer = async () => {
   // waiting in the meeting lobby untill someone allow to join
   const quitButton = await page
     .waitForXPath("//i[text()='call_end']", {
-      timeout: lobbyTimeout,
+      timeout: meetTimeout,
     })
     .catch(() => {
       throw new Error("Couldn't join meeting, lobbyTimeout");
@@ -54,9 +52,9 @@ const launchPuppeteer = async () => {
   await page.close();
 };
 
-(function () {
+(async function () {
   try {
-    await launchPuppeteer();
+    meetCode && await launchPuppeteer();
     process.exit();
   } catch (error) {
     console.error(error);

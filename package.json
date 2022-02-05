@@ -10,6 +10,7 @@
   "author": "Chamara Abesinghe",
   "license": "MIT",
   "dependencies": {
+    "fluent-ffmpeg": "^2.1.2",
     "puppeteer-core": "^13.1.3"
   }
 }

@@ -13,6 +13,8 @@ main() {
     launch_vnc_server
     log_i "Starting google chrome..."
     launch_google_chrome
+    log_i "Starting puppeteer app..."
+    launch_puppeteer
 }
 
 launch_xvfb() {
@@ -103,7 +105,8 @@ launch_google_chrome() {
     --no-default-browser-check --no-first-run --disable-fre \
     --flag-switches-begin --disable-features=ChromeWhatsNewUI --flag-switches-end \
     --user-data-dir=/home/chrome &
-    wait $!
+    # wait here until chrome launch and accept connection on debug port
+    while ! timeout 1 bash -c "echo > /dev/tcp/localhost/9222"; do sleep 10; done
 }
 
 launch_pulse_audio() {
@@ -132,6 +135,11 @@ launch_ffmpeg() {
     ffmpeg -nostats -loglevel quiet -f pulse -ac 2 -i 1 -f x11grab -r 30 \
     -s 960x540 -i ${DISPLAY} -acodec pcm_s16le -vcodec libx264rgb -preset ultrafast \
     -crf 0 -threads 0 -async 1 -vsync 1 /home/chrome/test.mkv &
+}
+
+launch_puppeteer() {
+    node /home/chrome/index.js &
+    wait $!
 }
 
 log_i() {
