@@ -5,6 +5,14 @@ const meetURL = "https://meet.google.com";
 const meetCode = process.env.MEET_CODE;
 const meetUsername = process.env.MEET_USER || "Aaron";
 const meetTimeout = process.env.MEET_TIMEOUT || 10000;
+const globalTimeout = process.env.PUP_TIMEOUT || 5000;
+
+console.info(
+  `Meet code = ${meetCode}`,
+  `Meet user = ${meetUsername}`,
+  `Meet Timeout = ${meetTimeout}`,
+  `Global Timeout = ${globalTimeout}`
+);
 
 const launchPuppeteer = async () => {
   // connect with chrome instance
@@ -26,7 +34,9 @@ const launchPuppeteer = async () => {
   const page = await browser.newPage();
   await page.goto(`${meetURL}/${meetCode}`, {
     waitUntil: "networkidle2",
+    timeout: globalTimeout
   });
+  page.setDefaultTimeout(globalTimeout);
 
   // Enter username to join
   await page.type("input[type=text]", meetUsername, { delay: 20 });
@@ -79,7 +89,9 @@ const launchFfmpeg = () => {
     .on("error", (err) => {
       throw new Error(err);
     })
-    .save(`/home/chrome/videos/recording_${meetCode}_${new Date().valueOf()}.mkv`);
+    .save(
+      `/home/chrome/videos/recording_${meetCode}_${new Date().valueOf()}.mkv`
+    );
 };
 
 (async function () {
