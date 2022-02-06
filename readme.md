@@ -23,7 +23,7 @@
   ```
 * Without VNC
   ```sh
-  docker run MEET_CODE='your-gmeet-code' chamaabe/rec-gmeet:latest
+  docker run -e MEET_CODE='your-gmeet-code' chamaabe/rec-gmeet:latest
   ```
 
 ## :pencil: License
