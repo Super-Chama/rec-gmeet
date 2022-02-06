@@ -12,7 +12,7 @@
 
 ## :wrench: Built With (read dockerfile for full info)
 
-* [puppeteer](https://pptr.dev/)
+* [puppeteer](https://pptr.dev)
 * [fluent-ffmpeg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg)
 
 ## :running: Getting Started
