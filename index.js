@@ -79,7 +79,7 @@ const launchFfmpeg = () => {
     .on("error", (err) => {
       throw new Error(err);
     })
-    .save(`/home/chrome/recording_${meetCode}_${new Date().valueOf()}.mkv`);
+    .save(`/home/chrome/videos/recording_${meetCode}_${new Date().valueOf()}.mkv`);
 };
 
 (async function () {

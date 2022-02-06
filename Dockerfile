@@ -54,7 +54,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && apt-get install
 # Setup default user
 #========================
 RUN groupadd -r chrome && useradd -r -g chrome -G audio,video,pulse-access chrome \
-    && mkdir -p /home/chrome/Downloads && chown -R chrome:chrome /home/chrome
+    && mkdir -p /home/chrome/videos && chown -R chrome:chrome /home/chrome
 
 WORKDIR /home/chrome
 USER chrome
